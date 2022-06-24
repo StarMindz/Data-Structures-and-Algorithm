@@ -1,0 +1,328 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled11.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyPpbntQg7cHcf+LISohExmi",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/StarMindz/Data-Structures-and-Algorithm/blob/main/A%20Min%20Heap%20Data%20Structure%20(A%20special%20tree%20based%20Data%20Structure)\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 17,
+      "metadata": {
+        "id": "7FEnl-yMXKXA"
+      },
+      "outputs": [],
+      "source": [
+        "\n",
+        "\n",
+        "class Heap:\n",
+        "    def __init__ (self, capacity):\n",
+        "        self.capacity = capacity\n",
+        "        self.storage = [0 for x in range(self.capacity)]\n",
+        "        self.stage = 0 \n",
+        "    \n",
+        "    def getParent(self, index):\n",
+        "        return (index-1)//2\n",
+        "    \n",
+        "    def getLeftChild(self, index):\n",
+        "        return (index*2)+1\n",
+        "    \n",
+        "    def getRightChild(self, index):\n",
+        "        return (index*2)+2\n",
+        "    \n",
+        "    def checkParent(self, index):\n",
+        "        return self.getParent(index)>=0\n",
+        "            \n",
+        "    \n",
+        "    def checkLeftChild(self, index):\n",
+        "        return self.getLeftChild(index)<self.stage\n",
+        "    \n",
+        "    def checkRightChild(self, index):\n",
+        "        return self.getRightChild(index)<self.stage\n",
+        "    \n",
+        "    def parent(self, index):\n",
+        "        return self.storage[self.getParent(index)]\n",
+        "    \n",
+        "    def leftChild(self, index):\n",
+        "        return self.storage[self.getLeftChild(index)]\n",
+        "    \n",
+        "    def rightChild(self, index):\n",
+        "        return self.storage[self.getRightChild(index)]\n",
+        "    \n",
+        "    \n",
+        "    \n",
+        "    def swap(self, index1, index2):\n",
+        "        self.storage[index1], self.storage[index2] = self.storage[index2], self.storage[index1]\n",
+        "    \n",
+        "    def heapFull(self):\n",
+        "        return self.capacity == self.stage\n",
+        "            \n",
+        "            \n",
+        "    def insert (self, data):\n",
+        "        if self.heapFull():\n",
+        "            raise \"Heap is full\"\n",
+        "        else:\n",
+        "            self.storage[self.stage]=data\n",
+        "            self.stage+=1\n",
+        "            self.heapifyUP(self.stage-1)\n",
+        "            \n",
+        "    def heapifyUP(self, index):\n",
+        "        if (self.checkParent(index) and (self.parent(index)>self.storage[index])):\n",
+        "            self.swap(self.getParent(index), index)\n",
+        "            self.heapifyUP(self.getParent(index))\n",
+        "        \n",
+        "    def getMin(self):\n",
+        "        if self.stage == 0:\n",
+        "            raise \"Empty Heap\"\n",
+        "        data = self.storage[0]\n",
+        "        self.storage[0]=self.storage[self.stage-1]\n",
+        "        self.stage-=1\n",
+        "        self.heapifyDown(0)\n",
+        "        return data\n",
+        "    \n",
+        "    def heapifyDown(self, index):\n",
+        "        smallest = index\n",
+        "        if self.checkLeftChild(index) and self.leftChild(index)<self.storage[smallest]:\n",
+        "            smallest = self.getLeftChild(index)\n",
+        "            if self.checkRightChild(index) and self.rightChild(index)<self.storage[smallest]:\n",
+        "                smallest = self.getRightChild(index)\n",
+        "        if not smallest==index:\n",
+        "                self.swap(smallest, index)\n",
+        "                self.heapifyDown(smallest)\n",
+        "\n",
+        "    def peak(self):\n",
+        "      return self.storage[0]\n",
+        "\n",
+        "\n",
+        "\n",
+        "                \n",
+        "        \n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "heap1 = Heap(5)"
+      ],
+      "metadata": {
+        "id": "UJrvv-iEXb0f"
+      },
+      "execution_count": 18,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "heap1.insert(2)\n",
+        "heap1.insert(3)\n",
+        "heap1.insert(4)\n"
+      ],
+      "metadata": {
+        "id": "w4STUjO0Xbik"
+      },
+      "execution_count": 19,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "heap1.insert(1)"
+      ],
+      "metadata": {
+        "id": "x694ZayzAixU"
+      },
+      "execution_count": 20,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "heap1.storage"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "DIly09FnAr-t",
+        "outputId": "fe314882-de07-409b-a374-11adb139ce82"
+      },
+      "execution_count": 21,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[1, 2, 4, 3, 0]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 21
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "heap1.getMin()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Hl7N7Z1KAujT",
+        "outputId": "020bbf4d-744d-45cf-aa4e-bf862bf1d19f"
+      },
+      "execution_count": 22,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "1"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 22
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "heap1.storage"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JtQI1S5DCbNV",
+        "outputId": "a53f7db1-88b5-40d8-86e6-dc209a1e8bdb"
+      },
+      "execution_count": 24,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[2, 3, 4, 3, 0]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 24
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "heap1.insert(9)"
+      ],
+      "metadata": {
+        "id": "0WGuQrD_CwZ7"
+      },
+      "execution_count": 25,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "heap1.storage"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "GnE5A0DGC1ML",
+        "outputId": "a195b052-d28e-42e2-b84f-20a9cc4814d5"
+      },
+      "execution_count": 26,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[2, 3, 4, 9, 0]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 26
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "heap1.peak()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "V5WsFEdNC8Tj",
+        "outputId": "19f5e2f7-9d68-4e15-bf34-2020e8d1eb6b"
+      },
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "2"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 27
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "heap1.storage"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "qbZqLuLuDB74",
+        "outputId": "48c3e9b2-8718-4387-dacc-b78979978655"
+      },
+      "execution_count": 28,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[2, 3, 4, 9, 0]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 28
+        }
+      ]
+    }
+  ]
+}
